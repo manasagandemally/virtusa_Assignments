@@ -21,6 +21,7 @@ Scanner sc=new Scanner(System.in);
 BillGenerator obj=new BillGenerator();
 
 while(true){
+    System.out.println("\n===== SmartPay Utility Billing System =====\n");
     System.out.println("Enter customer name (or Exit):");
     String name=sc.nextLine();
     if(name.equalsIgnoreCase("Exit")) break;
@@ -39,10 +40,11 @@ while(true){
     double total=obj.calculateTotal(units);
     double tax=total*0.1;
 
-    System.out.println("Digital Receipt: ");
+    System.out.println("\n=========== DIGITAL RECEIPT ===========");
     System.out.println("Customer Name:" +name);
     System.out.println("Units consumed: "+units);
     System.out.println("Tax: "+tax);
+    System.out.println("----------------------------------------");
     System.out.println("Total: "+(total+tax));
 }
 }
