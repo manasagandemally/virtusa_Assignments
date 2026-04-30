@@ -13,7 +13,7 @@ Category VARCHAR(50)
 -- Students Table
 CREATE TABLE Students(
 StudentID INT PRIMARY KEY,
-StudentName VARCHAR(100),
+StudentName VARCHAR(100) NOT NULL,
 Email VARCHAR(100)
 );
 
@@ -62,6 +62,9 @@ INSERT INTO IssuedBooks VALUES (105,1,5,'2026-04-21', NULL);
 INSERT INTO IssuedBooks VALUES (106,7,6,'2026-04-01', NULL);
 INSERT INTO IssuedBooks VALUES (107,7,7,'2022-04-01', '2022-04-12' );
 
+SELECT * FROM Books;
+SELECT * FROM Students;
+SELECT * FROM IssuedBooks;
 
 -- OverDue Query 
 SELECT 
@@ -88,20 +91,21 @@ ORDER BY Total_Borrows DESC;
 
 
 -- Data Clean up
-SELECT * FROM Students
-WHERE StudentID NOT IN (
-    SELECT DISTINCT StudentID
-    FROM IssuedBooks
-    WHERE IssueDate >= CURDATE() - INTERVAL 3 YEAR
+SELECT *
+FROM Students s
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM IssuedBooks ib
+    WHERE ib.StudentID = s.StudentID
+    AND ib.IssueDate >= CURDATE() - INTERVAL 3 YEAR
 );
 
-SET SQL_SAFE_UPDATES = 0;
 
-DELETE FROM Students
-WHERE StudentID NOT IN (
-    SELECT DISTINCT StudentID
-    FROM IssuedBooks
-    WHERE IssueDate >= CURDATE() - INTERVAL 3 YEAR
+DELETE FROM Students s
+WHERE NOT EXISTS (
+    SELECT 1 FROM IssuedBooks ib
+    WHERE ib.StudentID = s.StudentID
+    AND ib.IssueDate >= CURDATE() - INTERVAL 3 YEAR
 );
 
 
